@@ -28,7 +28,7 @@ public class Game extends BasicGameState{
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 //		gc.setVSync(true);
-//		gc.setTargetFrameRate(60);
+		gc.setTargetFrameRate(60);
 		gc.setMaximumLogicUpdateInterval(1000/61);
 		gc.setMinimumLogicUpdateInterval(1000/60);
 		
@@ -47,10 +47,12 @@ public class Game extends BasicGameState{
 		
 		world.render(gc, sbg, g);
 		
-		float scw = Launcher.getGAME_WIDTH()/2;
-		float sch = Launcher.getGAME_HEIGHT()/2;
+		float scw = world.entityMap.get(0).getColbox().getCenterX();
+		float sch = world.entityMap.get(0).getColbox().getCenterY();
 		
-		float mpa = (float) Math.toDegrees(Math.atan2((Mouse.getX() - scw), ((Mouse.getY()) - sch)));
+		float mpa = (float) Math.toDegrees(Math.atan2((Mouse.getX() - scw), (Launcher.getGAME_HEIGHT() - Mouse.getY() - sch)));
+		mpa *= -1f;
+		mpa += 180f;
 		g.drawString("mpa: " + mpa + "\nFOV: " + fov, 10, 64);
 		
 //		g.drawLine(scw, sch, Mouse.getX(), sch*2 - Mouse.getY());
@@ -61,6 +63,9 @@ public class Game extends BasicGameState{
 		g.resetTransform();
 		g.rotate(scw, sch, mpa - fov/2f);
 		g.drawLine(scw, sch, scw, sch - 300);
+		
+		g.resetTransform();
+		g.drawString(Mouse.getX() + ", " + Mouse.getY(), Mouse.getX(),Launcher.getGAME_HEIGHT() -  Mouse.getY());
 	}
 	
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {

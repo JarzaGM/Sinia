@@ -7,6 +7,7 @@ public abstract class Entity {
 
 	private float x, y;
 	private float xv, yv;
+	private float speed;
 	private float width, height;
 	private Rectangle colbox;
 	private PhysicsType phyType;
@@ -47,6 +48,14 @@ public abstract class Entity {
 
 	public void setYv(float yv) {
 		this.yv = yv;
+	}
+	
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
 	}
 
 	public float getWidth() {

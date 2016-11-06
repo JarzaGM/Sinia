@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import ga.jarza.sinia.entities.PlayerManager;
 import ga.jarza.sinia.main.Launcher;
 import ga.jarza.sinia.physics.Entity;
 
@@ -27,11 +28,14 @@ public class World {
 
 		entityMap = new HashMap<Integer, Entity>();
 		worldMap = new HashMap<Integer, Entity>();
+		
+		entityMap.put(entityMap.size(), new PlayerManager());
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) {
 		for (int i = 0; i < entityMap.size(); i++) {
-			entityMap.get(i).update(delta);
+			if(entityMap.get(i) != null)
+				entityMap.get(i).update(delta);
 		}
 	}
 
@@ -52,6 +56,9 @@ public class World {
 				}
 			}
 		}
+		
+		g.drawString("0,0", 0, 0);
+		g.drawString("1,1", Launcher.getGAME_WIDTH() - 32, Launcher.getGAME_HEIGHT() - 18);
 	}
 
 }
