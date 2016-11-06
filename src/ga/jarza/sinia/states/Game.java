@@ -9,6 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import ga.jarza.sinia.main.Launcher;
+import world.World;
 
 
 
@@ -19,6 +20,7 @@ public class Game extends BasicGameState{
 	@SuppressWarnings("unused")
 	private int up_time, ups, upsc, delta;
 	private boolean _init;
+	public World world;
 	
 	public Game(int state){
 		Game.state = state;
@@ -32,7 +34,7 @@ public class Game extends BasicGameState{
 		
 		if(!_init){
 			
-			
+			world = new World();
 			_init = true;
 		}	
 	}
@@ -42,6 +44,8 @@ public class Game extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Draw Updates per Second
 		g.drawString("Ticks: " + upsc, 10, 36);
+		
+		world.render(gc, sbg, g);
 		
 		float scw = Launcher.getGAME_WIDTH()/2;
 		float sch = Launcher.getGAME_HEIGHT()/2;
@@ -64,6 +68,8 @@ public class Game extends BasicGameState{
 		up_time += delta;
 		ups++;
 		
+		world.update(gc, sbg, delta);
+		
 		int dw = Mouse.getDWheel();
 		float c = 2.5f;
 		
@@ -72,6 +78,17 @@ public class Game extends BasicGameState{
 		}
 		if(dw > 0){
 			fov += c;
+		}
+		
+		if(Mouse.isButtonDown(0)){
+			fov -= c;
+		}else if(Mouse.isButtonDown(1)){
+			fov += c;
+		}
+		if(fov > 120f){
+			fov = 120f;
+		}else if(fov < 5f){
+			fov = 5f;
 		}
 		
 		if(up_time > 1000){

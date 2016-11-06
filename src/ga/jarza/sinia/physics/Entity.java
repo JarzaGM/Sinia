@@ -9,6 +9,7 @@ public abstract class Entity {
 	private float xv, yv;
 	private float width, height;
 	private Rectangle colbox;
+	private PhysicsType phyType;
 	
 	public abstract void update(int delta);
 
@@ -20,6 +21,7 @@ public abstract class Entity {
 
 	public void setX(float x) {
 		this.x = x;
+		this.setColbox(new Rectangle(x,getColbox().getY(),getColbox().getHeight(),getColbox().getWidth()));
 	}
 
 	public float getY() {
@@ -28,6 +30,7 @@ public abstract class Entity {
 
 	public void setY(float y) {
 		this.y = y;
+		this.setColbox(new Rectangle(getColbox().getX(),y,getColbox().getHeight(),getColbox().getWidth()));
 	}
 
 	public float getXv() {
@@ -52,6 +55,7 @@ public abstract class Entity {
 
 	public void setWidth(float width) {
 		this.width = width;
+		this.setColbox(new Rectangle(getColbox().getX(),getColbox().getY(),width,getColbox().getHeight()));
 	}
 
 	public float getHeight() {
@@ -60,6 +64,7 @@ public abstract class Entity {
 
 	public void setHeight(float height) {
 		this.height = height;
+		this.setColbox(new Rectangle(getColbox().getX(),getColbox().getY(),getColbox().getWidth(),height));
 	}
 
 	public Rectangle getColbox() {
@@ -68,6 +73,14 @@ public abstract class Entity {
 
 	public void setColbox(Rectangle colbox) {
 		this.colbox = colbox;
+	}
+
+	public PhysicsType getPhyType() {
+		return phyType;
+	}
+
+	public void setPhyType(PhysicsType phyType) {
+		this.phyType = phyType;
 	}
 
 }
