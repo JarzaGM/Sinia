@@ -1,12 +1,12 @@
-package ga.jarza.sinia.main;
+package main;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import ga.jarza.sinia.states.Game;
-import ga.jarza.sinia.states.GameMenu;
+import gameStates.Game;
+import gameStates.GameMenu;
 
 public class Launcher extends StateBasedGame{
 

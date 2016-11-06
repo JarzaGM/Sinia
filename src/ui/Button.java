@@ -1,4 +1,4 @@
-package ga.jarza.sinia.ui;
+package ui;
 
 import org.newdawn.slick.Graphics;
 

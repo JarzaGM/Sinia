@@ -1,18 +1,19 @@
-package ga.jarza.sinia.ui.buttons;
+package ui.buttons;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
-import ga.jarza.sinia.main.Launcher;
-import ga.jarza.sinia.ui.Button;
+import gameStates.Translator;
+import main.Launcher;
+import ui.Button;
 
-public class ExitButton extends Button{
+public class PlayButton extends Button {
 	
 	private boolean cur, prev;
 	
-	public ExitButton(float x, float y, float sx, float sy, String text) {
+	public PlayButton(float x, float y, float sx, float sy, String text) {
 		super(x, y, sx, sy, text);
 	}
 
@@ -22,7 +23,7 @@ public class ExitButton extends Button{
 		if(new Rectangle(x, y, sx, sy).contains(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())){
 			if(cur && !prev){
 				// CLick
-				System.exit(0);
+				Translator.gotoState(Launcher.ingame);
 			}
 		}
 		
@@ -35,7 +36,5 @@ public class ExitButton extends Button{
 		g.setColor(Color.white);
 		g.drawString(text, x, y);
 	}
-	
-	
-	
+
 }

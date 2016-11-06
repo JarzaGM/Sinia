@@ -1,4 +1,4 @@
-package ga.jarza.sinia.states;
+package gameStates;
 
 import org.newdawn.slick.state.StateBasedGame;
 

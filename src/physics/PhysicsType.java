@@ -1,4 +1,4 @@
-package ga.jarza.sinia.physics;
+package physics;
 
 public enum PhysicsType {
 	Solid(), Dynamic(), Tile();

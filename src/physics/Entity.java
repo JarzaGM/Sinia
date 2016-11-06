@@ -1,4 +1,4 @@
-package ga.jarza.sinia.physics;
+package physics;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
