@@ -2,6 +2,7 @@ package physics;
 
 import org.newdawn.slick.geom.Rectangle;
 
+import entities.Entity;
 import world.World;
 
 public class Collision {

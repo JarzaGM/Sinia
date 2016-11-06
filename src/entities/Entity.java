@@ -1,7 +1,10 @@
-package physics;
+package entities;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+
+import physics.PhysicsType;
+import world.World;
 
 public abstract class Entity {
 
@@ -11,8 +14,14 @@ public abstract class Entity {
 	private float width, height;
 	private Rectangle colbox;
 	private PhysicsType phyType;
+	private int id;
+	private boolean kill;
 	
-	public abstract void update(int delta);
+	public Entity(int id) {
+		this.setId(id);
+	}
+	
+	public abstract void update(int delta, World world);
 
 	public abstract void render(Graphics g);
 	
@@ -90,6 +99,22 @@ public abstract class Entity {
 
 	public void setPhyType(PhysicsType phyType) {
 		this.phyType = phyType;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public boolean shouldDie(){
+		return kill;
+	}
+	
+	public void kill() {
+		this.kill = true;
 	}
 
 }

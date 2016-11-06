@@ -1,4 +1,4 @@
-package entities;
+package entities.solid;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -7,8 +7,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
+import entities.Entity;
 import main.Launcher;
-import physics.Entity;
+import world.World;
 
 public class PlayerManager extends Entity {
 	
@@ -16,11 +17,10 @@ public class PlayerManager extends Entity {
 	public int[][] keymap = {{Input.KEY_W, Input.KEY_A, Input.KEY_S, Input.KEY_D}
 							,{Input.KEY_UP, Input.KEY_LEFT, Input.KEY_DOWN, Input.KEY_RIGHT}};
 	
-	public PlayerManager(int setting) {
+	public PlayerManager(int id, int setting) {
+		super(id);
 		this.setting = setting;
 		setColbox(new Rectangle(0f, 0f, 0f, 0f));
-		setX(32f);
-		setY(32f);
 		setWidth(32f);
 		setHeight(32f);
 		setSpeed(0.5f);
@@ -29,7 +29,7 @@ public class PlayerManager extends Entity {
 	float fov = 90f;
 	boolean charged = false;
 	
-	public void update(int delta) {
+	public void update(int delta, World world) {
 		if (Keyboard.isKeyDown(keymap[setting][0])) {
 			setYv(-getSpeed() * delta);
 		}
@@ -85,7 +85,6 @@ public class PlayerManager extends Entity {
 		g.setColor(Color.white);
 		g.fillRect(getX(), getY(), getWidth(), getHeight());
 		
-		g.setColor(Color.white);
 		float scw = getColbox().getCenterX();
 		float sch = getColbox().getCenterY();
 		
@@ -93,7 +92,10 @@ public class PlayerManager extends Entity {
 		mpa *= -1f;
 		mpa += 180f;
 		
-		g.drawString("mpa: " + mpa + "\nFOV: " + fov, 10, 54);
+//		g.drawString("mpa: " + mpa + "\nFOV: " + fov, 10, 54);
+		g.setColor(Color.black);
+		g.drawString("-" + getId(), getX(), getY());
+		g.setColor(Color.white);
 		
 		if(charged){
 			g.setColor(Color.green);
