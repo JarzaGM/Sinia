@@ -4,9 +4,7 @@ package ga.jarza.sinia.states;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -49,9 +47,10 @@ public class Game extends BasicGameState{
 		float sch = Launcher.getGAME_HEIGHT()/2;
 		
 		float mpa = (float) Math.toDegrees(Math.atan2((Mouse.getX() - scw), ((Mouse.getY()) - sch)));
-		g.drawString("" + mpa, 10, 64);
+		g.drawString("mpa: " + mpa + "\nFOV: " + fov, 10, 64);
+		
 //		g.drawLine(scw, sch, Mouse.getX(), sch*2 - Mouse.getY());
-//		g.rotate(scw, sch, mpa + 63.5f);
+		
 		g.resetTransform();
 		g.rotate(scw, sch, mpa + fov/2f);
 		g.drawLine(scw, sch, scw, sch - 300);
@@ -65,11 +64,14 @@ public class Game extends BasicGameState{
 		up_time += delta;
 		ups++;
 		
-		if(Mouse.getDWheel() < 0){
-			fov -= 1f;
+		int dw = Mouse.getDWheel();
+		float c = 2.5f;
+		
+		if(dw < 0){
+			fov -= c;
 		}
-		if(Mouse.getDWheel() > 0){
-			fov += 1f;
+		if(dw > 0){
+			fov += c;
 		}
 		
 		if(up_time > 1000){
