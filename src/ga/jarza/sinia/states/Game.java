@@ -4,7 +4,9 @@ package ga.jarza.sinia.states;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -37,7 +39,7 @@ public class Game extends BasicGameState{
 		}	
 	}
 	
-	float ang;
+	float fov = 90f;
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Draw Updates per Second
@@ -47,14 +49,28 @@ public class Game extends BasicGameState{
 		float sch = Launcher.getGAME_HEIGHT()/2;
 		
 		float mpa = (float) Math.toDegrees(Math.atan2((Mouse.getX() - scw), ((Mouse.getY()) - sch)));
-		g.rotate(scw, sch, mpa);
-		g.drawLine(scw, sch, 200, 200);
+		g.drawString("" + mpa, 10, 64);
+//		g.drawLine(scw, sch, Mouse.getX(), sch*2 - Mouse.getY());
+//		g.rotate(scw, sch, mpa + 63.5f);
+		g.resetTransform();
+		g.rotate(scw, sch, mpa + fov/2f);
+		g.drawLine(scw, sch, scw, sch - 300);
+		g.resetTransform();
+		g.rotate(scw, sch, mpa - fov/2f);
+		g.drawLine(scw, sch, scw, sch - 300);
 	}
 	
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		this.delta = delta;
 		up_time += delta;
 		ups++;
+		
+		if(Mouse.getDWheel() < 0){
+			fov -= 1f;
+		}
+		if(Mouse.getDWheel() > 0){
+			fov += 1f;
+		}
 		
 		if(up_time > 1000){
 			// Updates per second
