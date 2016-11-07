@@ -58,31 +58,37 @@ public class Game extends BasicGameState {
 		ups++;
 
 		world.update(gc, sbg, delta);
-
-		if (up_time > 1000) {
+		
+		int del = 1000;
+		
+		if (up_time > del) {
 			// Updates per second
 			upsc = ups;
 			ups = 0;
 			up_time = 0;
 		}
-		if (timer[0] >= 1000) {
-			if (Keyboard.isKeyDown(Input.KEY_0)) {
-				world.remEntity(0);
-			}
-		}
-		if (timer[1] >= 1000) {
+		if (timer[0] >= del) {
 			if (Keyboard.isKeyDown(Input.KEY_1)) {
-				world.remEntity(1);
+				world.remEntity(2);
+				timer[0] = 0;
 			}
 		}
-		if (timer[2] >= 1000) {
+		if (timer[1] >= del) {
 			if (Keyboard.isKeyDown(Input.KEY_2)) {
-				world.addEntity(new PlayerManager(world.entityMap.size(), 0), 32f, 32f);
+				world.remEntity(3);
+				timer[1] = 0;
 			}
 		}
-		if (timer[3] >= 1000) {
+		if (timer[2] >= del) {
 			if (Keyboard.isKeyDown(Input.KEY_3)) {
-				world.addEntity(new PlayerManager(world.entityMap.size(), 1), 32f, 64f);
+				world.addEntity(new PlayerManager(0), 32f, 32f);
+				timer[2] = 0;
+			}
+		}
+		if (timer[3] >= del) {
+			if (Keyboard.isKeyDown(Input.KEY_4)) {
+				world.addEntity(new PlayerManager(1), 32f, 64f);
+				timer[3] = 0;
 			}
 		}
 

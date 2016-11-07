@@ -17,19 +17,20 @@ public class PlayerManager extends Entity {
 	public int[][] keymap = {{Input.KEY_W, Input.KEY_A, Input.KEY_S, Input.KEY_D}
 							,{Input.KEY_UP, Input.KEY_LEFT, Input.KEY_DOWN, Input.KEY_RIGHT}};
 	
-	public PlayerManager(int id, int setting) {
-		super(id);
+	public PlayerManager(int setting) {
 		this.setting = setting;
 		setColbox(new Rectangle(0f, 0f, 0f, 0f));
 		setWidth(32f);
 		setHeight(32f);
 		setSpeed(0.5f);
+		setString("Player " + setting);
 	}
 	
 	float fov = 90f;
 	boolean charged = false;
 	
-	public void update(int delta, World world) {
+	public void update(int delta, World world, int id) {
+		setId(id);
 		if (Keyboard.isKeyDown(keymap[setting][0])) {
 			setYv(-getSpeed() * delta);
 		}
@@ -82,7 +83,11 @@ public class PlayerManager extends Entity {
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.white);
+		if(setting == 1){
+			g.setColor(Color.orange);
+		}else{
+			g.setColor(Color.red);
+		}
 		g.fillRect(getX(), getY(), getWidth(), getHeight());
 		
 		float scw = getColbox().getCenterX();

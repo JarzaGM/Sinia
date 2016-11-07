@@ -14,14 +14,12 @@ public abstract class Entity {
 	private float width, height;
 	private Rectangle colbox;
 	private PhysicsType phyType;
+	private String string;
+
 	private int id;
 	private boolean kill;
 	
-	public Entity(int id) {
-		this.setId(id);
-	}
-	
-	public abstract void update(int delta, World world);
+	public abstract void update(int delta, World world, int id);
 
 	public abstract void render(Graphics g);
 	
@@ -115,6 +113,14 @@ public abstract class Entity {
 	
 	public void kill() {
 		this.kill = true;
+	}
+	
+	public void setString(String string) {
+		this.string = string;
+	}
+	
+	public String toString(){
+		return string;
 	}
 
 }
