@@ -15,7 +15,8 @@ public abstract class Entity {
 	private Rectangle colbox;
 	private PhysicsType phyType;
 	private String string;
-
+	public boolean selected = false;
+	
 	private int id;
 	private boolean kill;
 	

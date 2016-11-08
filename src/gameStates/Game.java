@@ -10,6 +10,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import entities.solid.PlayerManager;
+import main.Launcher;
 import world.World;
 
 public class Game extends BasicGameState {
@@ -42,10 +43,9 @@ public class Game extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Draw Updates per Second
 		g.setColor(Color.white);
-		g.drawString("Ticks: " + upsc, 10, 36);
+		g.drawString("Ticks: " + upsc, 10, 24);
 
 		world.render(gc, sbg, g);
-
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -53,10 +53,12 @@ public class Game extends BasicGameState {
 		up_time += delta;
 		timer[0] += delta;
 		timer[1] += delta;
-		timer[2] += delta;
-		timer[3] += delta;
 		ups++;
-
+		
+		if(Keyboard.isKeyDown(Input.KEY_ESCAPE)){
+			Translator.gotoState(Launcher.menu);
+		}
+		
 		world.update(gc, sbg, delta);
 		
 		int del = 1000;
@@ -67,28 +69,17 @@ public class Game extends BasicGameState {
 			ups = 0;
 			up_time = 0;
 		}
+		
 		if (timer[0] >= del) {
 			if (Keyboard.isKeyDown(Input.KEY_1)) {
-				world.remEntity(2);
+				world.addEntity(new PlayerManager(0), 32f, 32f);
 				timer[0] = 0;
 			}
 		}
 		if (timer[1] >= del) {
 			if (Keyboard.isKeyDown(Input.KEY_2)) {
-				world.remEntity(3);
+				world.addEntity(new PlayerManager(1), 32f, 128f);
 				timer[1] = 0;
-			}
-		}
-		if (timer[2] >= del) {
-			if (Keyboard.isKeyDown(Input.KEY_3)) {
-				world.addEntity(new PlayerManager(0), 32f, 32f);
-				timer[2] = 0;
-			}
-		}
-		if (timer[3] >= del) {
-			if (Keyboard.isKeyDown(Input.KEY_4)) {
-				world.addEntity(new PlayerManager(1), 32f, 64f);
-				timer[3] = 0;
 			}
 		}
 

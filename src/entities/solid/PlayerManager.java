@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 
 import entities.Entity;
@@ -23,7 +24,7 @@ public class PlayerManager extends Entity {
 		setWidth(32f);
 		setHeight(32f);
 		setSpeed(0.5f);
-		setString("Player " + setting);
+		setString("Player " + (setting == 1 ? "orange" : "red"));
 	}
 	
 	float fov = 90f;
@@ -74,6 +75,12 @@ public class PlayerManager extends Entity {
 			fov = 5f;
 			charged = true;
 			
+		}
+		
+		if(getColbox().contains(new Point(Mouse.getX(),Launcher.getGAME_HEIGHT() - Mouse.getY()))){
+			if(Mouse.isButtonDown(1)){
+				kill();
+			}
 		}
 		
 		setX(getX() + getXv());

@@ -10,6 +10,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import ui.Button;
+import ui.OnOffButton;
+import ui.buttons.DebugButton;
 import ui.buttons.ExitButton;
 import ui.buttons.PlayButton;
 
@@ -23,6 +25,7 @@ public class GameMenu extends BasicGameState{
 	@SuppressWarnings("unused")
 	private int up_time, ups, upsc;
 	private boolean _init;
+	
 	public GameMenu(int state){
 		GameMenu.state = state;
 	}
@@ -35,6 +38,7 @@ public class GameMenu extends BasicGameState{
 		if(!_init){
 			buts.add(new PlayButton(32, 100, 128,32, "Play"));
 			buts.add(new ExitButton(32, 164, 128,32, "Exit"));
+			buts.add(new DebugButton(32, 228, 128,32, "Debug Mode"));
 			_init = true;
 		}
 	}
