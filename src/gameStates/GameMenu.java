@@ -10,7 +10,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import ui.Button;
-import ui.OnOffButton;
 import ui.buttons.DebugButton;
 import ui.buttons.ExitButton;
 import ui.buttons.PlayButton;

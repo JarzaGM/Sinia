@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import entities.Entity;
 import entities.solid.PlayerManager;
+import entities.solid.TestWall;
 import main.Launcher;
 
 public class World {
@@ -37,12 +38,15 @@ public class World {
 
 		addEntity(new PlayerManager(0), 32f, 32f);
 		addEntity(new PlayerManager(1), 32f, 128f);
+		addEntity(new TestWall(), 128f, 128f);
+		addEntity(new TestWall(), 128f, 160f);
+		addEntity(new TestWall(), 128f, 192f);
+		addEntity(new TestWall(), 128f, 224f);
 	}
 
-	int id, minFree = 0, mfb = 0;
+	int id, minFree = 0;
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) {
-		mfb = minFree;
 		for (int i = 0; i <= (entityMap.keySet().size() == 0 ? 0 : Collections.max(entityMap.keySet())); i++) {
 			if (entityMap.get(i) != null) {
 				if (entityMap.get(i).shouldDie()) {
@@ -154,5 +158,28 @@ public class World {
 			}
 		}
 	}
+	
+	public void addWEntity(Entity entity, float x, float y) {
+		entity.setX(x);
+		entity.setY(y);
 
+		if ((maxEntities != -1 && worldMap.size() < maxEntities) || maxEntities == -1) {
+			// worldMap.put((worldMap.keySet().size() == 0 ? 0 :
+			// Collections.max(worldMap.keySet()) + 1), entity);
+			worldMap.put(worldMap.keySet().size() == 0 ? 0 : Collections.max(worldMap.keySet()) + 1, entity);
+		}
+
+	}
+
+	public void remWEntity(int id) {
+		if (id <= (worldMap.keySet().size() == 0 ? 0 : Collections.max(worldMap.keySet()))) {
+			if (worldMap.get(id) != null) {
+				// System.out.println("Killed: " + id + " which is " +
+				// worldMap.get(id).getId() + "\n"
+				// + worldMap.get(id).toString());
+				worldMap.get(id).kill();
+			}
+		}
+	}
+	
 }

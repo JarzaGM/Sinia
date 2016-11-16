@@ -1,7 +1,5 @@
 package physics;
 
-import org.newdawn.slick.geom.Rectangle;
-
 import entities.Entity;
 import world.World;
 
@@ -16,68 +14,86 @@ public class Collision {
 	}
 
 	/**
-	 * Main collision mechanic.
-	 * positions.
+	 * Main collision mechanic. positions.
 	 * 
 	 */
-	public static void align(Entity a, World w) {
-		Rectangle c = a.getColbox(); // As colBox
+	public static void alignHor(Entity a, World w) {
 		Entity b = null;
-		Rectangle d = null;
-		
-		for (int i = 0; i < w.entityMap.size(); i++) {
-			b = w.entityMap.get(i);
-			d = b.getColbox();
-			
-			if (b.getPhyType() == PhysicsType.Solid && a.getPhyType() == PhysicsType.Solid) {
-				if (checkCollision(a, b)) {
-					// first we do horizontal checks;
-					if (a.getXv() > 0) {
-						// gobg right
-						if (c.getX() <= d.getX()) {
-							if (c.getY() + c.getHeight() > d.getY()) {
-								if (c.getY() < d.getY() + d.getHeight()) {
-									c.setX(d.getX() - c.getWidth());
-								}
-							}
-						}
-					}
-					
-					if (a.getXv() < 0) {
-						// gobg left
-						if (c.getX() + c.getWidth() >= d.getX() + d.getWidth()) {
-							if (c.getY() + c.getHeight() > d.getY()) {
-								if (c.getY() < d.getY() + d.getHeight()) {
-									c.setX(d.getX() + d.getWidth());
-								}
-							}
-						}
-					}
 
-					// then we do the vertical checks;
-					if (a.getYv() > 0) {
-						// gobg down
-						if (c.getY() <= d.getY()) {
-							if (c.getX() + c.getWidth() > d.getX()) {
-								if (c.getX() < d.getX() + d.getWidth()) {
-									c.setY(d.getY() - c.getHeight());
+		for (int i = 0; i < w.entityMap.size(); i++) {
+			if (w.entityMap.get(i) != null) {
+				b = w.entityMap.get(i);
+
+				if (b.getPhyType() == PhysicsType.Solid) {
+					if (checkCollision(a, b)) {
+						// first we do horizontal checks;
+						if (a.getXv() > 0) {
+							// going right
+							if (a.getColbox().getX() < b.getColbox().getX()
+									&& a.getColbox().getX() + a.getColbox().getWidth() > b.getColbox().getX()) {
+								if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()) {
+									if (a.getColbox().getY() < b.getColbox().getY() + b.getColbox().getHeight()) {
+										a.setX(b.getColbox().getX() - a.getColbox().getWidth());
+									}
 								}
 							}
 						}
-					}
-					
-					if (a.getYv() < 0) {
-						// gobg up
-						if (c.getY() + c.getHeight() >= d.getY() + d.getHeight()) {
-							if (c.getX() + c.getWidth() > d.getX()) {
-								if (c.getX() < d.getX() + d.getWidth()) {
-									c.setY(d.getY() + d.getHeight());
+
+						if (a.getXv() < 0) {
+							// going left
+							if (a.getColbox().getX() < b.getColbox().getX() + b.getColbox().getWidth()
+									&& a.getColbox().getX() + a.getColbox().getWidth() > b.getColbox().getX()
+											+ b.getColbox().getWidth()) {
+								if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()) {
+									if (a.getColbox().getY() < b.getColbox().getY() + b.getColbox().getHeight()) {
+										a.setX(b.getColbox().getX() + b.getColbox().getWidth());
+									}
 								}
 							}
 						}
 					}
 				}
 			}
-		}
+		} // end
+	}
+
+	public static void alignVer(Entity a, World w) {
+		Entity b = null;
+		for (int i = 0; i < w.entityMap.size(); i++) {
+			if (w.entityMap.get(i) != null) {
+				b = w.entityMap.get(i);
+
+				if (b.getPhyType() == PhysicsType.Solid ) {
+					if (checkCollision(a, b)) {
+
+						// then we do the vertical checks;
+						if (a.getYv() > 0) {
+							// going down
+							if (a.getColbox().getY() + a.getColbox().getHeight() >= b.getColbox().getY()
+									&& a.getColbox().getY() < b.getColbox().getY()) {
+								if (a.getColbox().getX() + a.getColbox().getWidth() >= b.getColbox().getX()) {
+									if (a.getColbox().getX() < b.getColbox().getX() + b.getColbox().getWidth()) {
+										a.setY(b.getColbox().getY() - a.getColbox().getHeight());
+									}
+								}
+							}
+						}
+
+						if (a.getYv() < 0) {
+							// going up
+							if (a.getColbox().getY() + a.getColbox().getHeight() >= b.getColbox().getY()
+									+ b.getColbox().getHeight()
+									&& a.getColbox().getY() <= b.getColbox().getY() + b.getColbox().getHeight()) {
+								if (a.getColbox().getX() + a.getColbox().getWidth() >= b.getColbox().getX()) {
+									if (a.getColbox().getX() <= b.getColbox().getX() + b.getColbox().getWidth()) {
+										a.setY(b.getColbox().getY() + b.getColbox().getHeight());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} // end
 	}
 }
