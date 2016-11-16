@@ -46,7 +46,7 @@ public class Collision {
 											+ b.getColbox().getWidth()) {
 								if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()) {
 									if (a.getColbox().getY() < b.getColbox().getY() + b.getColbox().getHeight()) {
-										a.setX(b.getColbox().getX() + b.getColbox().getWidth());
+										a.setX(b.getColbox().getX() + b.getColbox().getWidth() );
 									}
 								}
 							}
@@ -69,9 +69,9 @@ public class Collision {
 						// then we do the vertical checks;
 						if (a.getYv() > 0) {
 							// going down
-							if (a.getColbox().getY() + a.getColbox().getHeight() >= b.getColbox().getY()
+							if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()
 									&& a.getColbox().getY() < b.getColbox().getY()) {
-								if (a.getColbox().getX() + a.getColbox().getWidth() >= b.getColbox().getX()) {
+								if (a.getColbox().getX() + a.getColbox().getWidth() > b.getColbox().getX()) {
 									if (a.getColbox().getX() < b.getColbox().getX() + b.getColbox().getWidth()) {
 										a.setY(b.getColbox().getY() - a.getColbox().getHeight());
 									}
@@ -81,11 +81,11 @@ public class Collision {
 
 						if (a.getYv() < 0) {
 							// going up
-							if (a.getColbox().getY() + a.getColbox().getHeight() >= b.getColbox().getY()
+							if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()
 									+ b.getColbox().getHeight()
-									&& a.getColbox().getY() <= b.getColbox().getY() + b.getColbox().getHeight()) {
-								if (a.getColbox().getX() + a.getColbox().getWidth() >= b.getColbox().getX()) {
-									if (a.getColbox().getX() <= b.getColbox().getX() + b.getColbox().getWidth()) {
+									&& a.getColbox().getY() < b.getColbox().getY() + b.getColbox().getHeight()) {
+								if (a.getColbox().getX() + a.getColbox().getWidth() > b.getColbox().getX()) {
+									if (a.getColbox().getX() < b.getColbox().getX() + b.getColbox().getWidth()) {
 										a.setY(b.getColbox().getY() + b.getColbox().getHeight());
 									}
 								}

@@ -27,6 +27,9 @@ public class World {
 	
 	public static boolean debugMode;
 	
+	public static float xo, yo;
+	public static PlayerManager player;
+	
 	public World() {
 		// Init new world
 
@@ -35,9 +38,11 @@ public class World {
 
 		entityMap = new HashMap<Integer, Entity>();
 		worldMap = new HashMap<Integer, Entity>();
-
-		addEntity(new PlayerManager(0), 32f, 32f);
-		addEntity(new PlayerManager(1), 32f, 128f);
+		
+		player = new PlayerManager(0);
+		
+		addEntity(player, Launcher.getGAME_WIDTH()/2 - 32f/2, Launcher.getGAME_HEIGHT()/2 - 32f/2); // 0
+//		addEntity(new PlayerManager(1), 32f, 128f);
 		addEntity(new TestWall(), 128f, 128f);
 		addEntity(new TestWall(), 128f, 160f);
 		addEntity(new TestWall(), 128f, 192f);
@@ -78,10 +83,13 @@ public class World {
 				}
 			}
 		}
-
+		
 		if (entityMap.get(minFree) != null) {
 			minFree = (entityMap.keySet().size() == 0 ? 0 : Collections.max(entityMap.keySet()) + 1);
 		}
+		
+		xo = -player.getX() + Launcher.getGAME_WIDTH()/2 - 32f/2;
+		yo = -player.getY() + Launcher.getGAME_HEIGHT()/2 - 32f/2;
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
@@ -90,7 +98,7 @@ public class World {
 			if (entityMap.get(i) != null) {
 				if (entityMap.get(i).getColbox()
 						.intersects(new Rectangle(0, 0, Launcher.getGAME_WIDTH(), Launcher.getGAME_HEIGHT()))) {
-					entityMap.get(i).render(g);
+					entityMap.get(i).render(g, xo, yo);
 				}
 				if(debugMode){
 					if(j <= 36){
@@ -123,7 +131,7 @@ public class World {
 			if (worldMap.get(i) != null) {
 				if (worldMap.get(i).getColbox()
 						.intersects(new Rectangle(0, 0, Launcher.getGAME_WIDTH(), Launcher.getGAME_HEIGHT()))) {
-					worldMap.get(i).render(g);
+					worldMap.get(i).render(g, xo, yo);
 				}
 			}
 		}
@@ -131,6 +139,7 @@ public class World {
 			g.setColor(Color.white);
 			g.drawString("Entity map size: " + entityMap.size() + " / minFree: " + minFree, 10, 38);
 		}
+		g.translate(xo, yo);
 	}
 
 	public void addEntity(Entity entity, float x, float y) {

@@ -22,9 +22,9 @@ public class TestWall extends Entity{
 		
 	}
 
-	public void render(Graphics g) {
+	public void render(Graphics g, float xo, float yo) {
 		g.setColor(Color.gray);
-		g.fillRect(getX(), getY(), getWidth(), getHeight());
+		g.fillRect(getX() + xo, getY() + yo, getWidth(), getHeight());
 	}
 	
 	

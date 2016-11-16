@@ -22,7 +22,7 @@ public abstract class Entity {
 	
 	public abstract void update(int delta, World world, int id);
 
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics g, float xo, float yo);
 	
 	public float getX() {
 		return x;

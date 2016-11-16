@@ -81,9 +81,10 @@ public class PlayerManager extends Entity {
 
 		if (getColbox().contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY()))) {
 			if (Mouse.isButtonDown(1)) {
-				kill();
+//				kill();
 			}
 		}
+		
 		setX(getX() + getXv());
 		Collision.alignHor(this, world);
 		
@@ -93,23 +94,27 @@ public class PlayerManager extends Entity {
 		setYv(0f);
 	}
 
-	public void render(Graphics g) {
+	public void render(Graphics g, float xo, float yo) {
 		if (setting == 1) {
 			g.setColor(Color.orange);
 		} else {
 			g.setColor(Color.red);
 		}
-		g.fillRect(getX(), getY(), getWidth(), getHeight());
+		g.fillRect(Launcher.getGAME_WIDTH()/2 - getWidth()/2, Launcher.getGAME_HEIGHT()/2 - getHeight()/2, getWidth(), getHeight());
 		g.draw(getColbox());
 
 		float scw = getColbox().getCenterX();
 		float sch = getColbox().getCenterY();
-
-		float mpa = (float) Math
-				.toDegrees(Math.atan2((Mouse.getX() - scw), (Launcher.getGAME_HEIGHT() - Mouse.getY() - sch)));
+		
+		float a = Launcher.getGAME_WIDTH()/2 - 32f/2;
+		float b = Launcher.getGAME_HEIGHT()/2 -32f/2;
+		
+		
+		float mpa = (float) Math.toDegrees(Math.atan2(((Mouse.getX()) - scw), (Launcher.getGAME_HEIGHT() - (Mouse.getY()) - sch)));
+//		float mpa = (float) Math.toDegrees(0.5);
 		mpa *= -1f;
 		mpa += 180f;
-
+		g.translate(xo, yo);
 		// g.drawString("mpa: " + mpa + "\nFOV: " + fov, 10, 54);
 		g.setColor(Color.black);
 		g.drawString("-" + getId(), getX(), getY());
@@ -117,17 +122,18 @@ public class PlayerManager extends Entity {
 
 		if (charged) {
 			g.setColor(Color.green);
-			g.fillOval(Mouse.getX() - 16, Launcher.getGAME_HEIGHT() - Mouse.getY() - 16, 32, 32);
+			g.fillOval(Mouse.getX() - a, Launcher.getGAME_HEIGHT() - Mouse.getY() - b, 32, 32);
 			g.drawLine(scw, sch, Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY());
 		}
 
 		g.resetTransform();
+		g.translate(xo, yo);
 		g.rotate(scw, sch, mpa + fov / 2f);
 		g.drawLine(scw, sch, scw, sch - 150);
 		g.resetTransform();
+		g.translate(xo, yo);
 		g.rotate(scw, sch, mpa - fov / 2f);
 		g.drawLine(scw, sch, scw, sch - 150);
-
 		g.resetTransform();
 	}
 
