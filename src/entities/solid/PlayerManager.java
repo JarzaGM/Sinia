@@ -9,9 +9,12 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 
 import entities.Entity;
+import gameStates.GameMenu;
 import main.Launcher;
 import physics.Collision;
 import physics.PhysicsType;
+import ui.buttons.ColBoxButton;
+import ui.buttons.DebugButton;
 import world.World;
 
 public class PlayerManager extends Entity {
@@ -19,7 +22,7 @@ public class PlayerManager extends Entity {
 	public int setting = 0;
 	public int[][] keymap = { { Input.KEY_W, Input.KEY_A, Input.KEY_S, Input.KEY_D },
 			{ Input.KEY_UP, Input.KEY_LEFT, Input.KEY_DOWN, Input.KEY_RIGHT } };
-
+	
 	public PlayerManager(int setting) {
 		this.setting = setting;
 		setColbox(new Rectangle(0f, 0f, 0f, 0f));
@@ -50,7 +53,7 @@ public class PlayerManager extends Entity {
 		if (Keyboard.isKeyDown(keymap[setting][3])) {
 			setXv(getSpeed() * delta);
 		}
-
+		
 		// int dw = Mouse.getDWheel();
 		float c = 5f;
 
@@ -90,48 +93,62 @@ public class PlayerManager extends Entity {
 		
 		setY(getY() + getYv());
 		Collision.alignVer(this, world);
+		
 		setXv(0f);
 		setYv(0f);
 	}
 
-	public void render(Graphics g, float xo, float yo) {
+	public void render(Graphics g, World world) {
 		if (setting == 1) {
 			g.setColor(Color.orange);
 		} else {
 			g.setColor(Color.red);
 		}
-		g.fillRect(Launcher.getGAME_WIDTH()/2 - getWidth()/2, Launcher.getGAME_HEIGHT()/2 - getHeight()/2, getWidth(), getHeight());
-		g.draw(getColbox());
-
+		
+		float a = Launcher.getGAME_WIDTH()/2 - getWidth()/2;
+		float b = Launcher.getGAME_HEIGHT()/2 - getHeight()/2;
+		
+		if(setting == 0){
+			g.fillRect(a, b, getWidth(), getHeight());
+		}else if(setting == 1){
+			g.fillRect(getX() + World.xo,getY() + World.yo, getWidth(), getHeight());
+		}
+		
+		int at = ((ColBoxButton) GameMenu.buts.get(GameMenu.COLBOXDEBUGID)).state;
+		boolean bt = ((DebugButton) GameMenu.buts.get(GameMenu.DEBUGID)).state;
+		
+		if(at == 0 || (at == 2 && bt == true)){
+			g.draw(getColbox());
+		}
+		
 		float scw = getColbox().getCenterX();
 		float sch = getColbox().getCenterY();
 		
-		float a = Launcher.getGAME_WIDTH()/2 - 32f/2;
-		float b = Launcher.getGAME_HEIGHT()/2 -32f/2;
 		
-		
-		float mpa = (float) Math.toDegrees(Math.atan2(((Mouse.getX()) - scw), (Launcher.getGAME_HEIGHT() - (Mouse.getY()) - sch)));
-//		float mpa = (float) Math.toDegrees(0.5);
+		float mpa = (float) Math.toDegrees(Math.atan2(((Mouse.getX() - World.xo) - scw), (Launcher.getGAME_HEIGHT() - (Mouse.getY() + World.yo) - sch)));
 		mpa *= -1f;
 		mpa += 180f;
-		g.translate(xo, yo);
+		
+		g.translate(World.xo, World.yo);
 		// g.drawString("mpa: " + mpa + "\nFOV: " + fov, 10, 54);
-		g.setColor(Color.black);
-		g.drawString("-" + getId(), getX(), getY());
+		if(bt){
+			g.setColor(Color.black);
+			g.drawString("-" + getId(), getX(), getY());
+		}
 		g.setColor(Color.white);
 
 		if (charged) {
 			g.setColor(Color.green);
-			g.fillOval(Mouse.getX() - a, Launcher.getGAME_HEIGHT() - Mouse.getY() - b, 32, 32);
-			g.drawLine(scw, sch, Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY());
+			g.fillOval((Mouse.getX() - World.xo)  - getWidth()/2, Launcher.getGAME_HEIGHT() - getHeight()/2 - (Mouse.getY() + World.yo), 32, 32);
+			g.drawLine(scw, sch, (Mouse.getX() - World.xo), Launcher.getGAME_HEIGHT() - (Mouse.getY() + World.yo));
 		}
 
 		g.resetTransform();
-		g.translate(xo, yo);
+		g.translate(World.xo, World.yo);
 		g.rotate(scw, sch, mpa + fov / 2f);
 		g.drawLine(scw, sch, scw, sch - 150);
 		g.resetTransform();
-		g.translate(xo, yo);
+		g.translate(World.xo, World.yo);
 		g.rotate(scw, sch, mpa - fov / 2f);
 		g.drawLine(scw, sch, scw, sch - 150);
 		g.resetTransform();

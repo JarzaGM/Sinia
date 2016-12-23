@@ -33,7 +33,7 @@ public class Collision {
 									&& a.getColbox().getX() + a.getColbox().getWidth() > b.getColbox().getX()) {
 								if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()) {
 									if (a.getColbox().getY() < b.getColbox().getY() + b.getColbox().getHeight()) {
-										a.setX(b.getColbox().getX() - a.getColbox().getWidth());
+										a.setX(b.getColbox().getX() - a.getColbox().getWidth() );
 									}
 								}
 							}
@@ -46,7 +46,7 @@ public class Collision {
 											+ b.getColbox().getWidth()) {
 								if (a.getColbox().getY() + a.getColbox().getHeight() > b.getColbox().getY()) {
 									if (a.getColbox().getY() < b.getColbox().getY() + b.getColbox().getHeight()) {
-										a.setX(b.getColbox().getX() + b.getColbox().getWidth() );
+										a.setX(b.getColbox().getX() + b.getColbox().getWidth());
 									}
 								}
 							}

@@ -14,7 +14,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import entities.Entity;
 import entities.solid.PlayerManager;
 import entities.solid.TestWall;
+import gameStates.GameMenu;
 import main.Launcher;
+import ui.buttons.DebugButton;
 
 public class World {
 
@@ -24,12 +26,12 @@ public class World {
 
 	public HashMap<Integer, Entity> entityMap;
 	public HashMap<Integer, Entity> worldMap;
-	
+
 	public static boolean debugMode;
-	
+
 	public static float xo, yo;
 	public static PlayerManager player;
-	
+
 	public World() {
 		// Init new world
 
@@ -38,15 +40,15 @@ public class World {
 
 		entityMap = new HashMap<Integer, Entity>();
 		worldMap = new HashMap<Integer, Entity>();
-		
+
 		player = new PlayerManager(0);
-		
-		addEntity(player, Launcher.getGAME_WIDTH()/2 - 32f/2, Launcher.getGAME_HEIGHT()/2 - 32f/2); // 0
-//		addEntity(new PlayerManager(1), 32f, 128f);
+
 		addEntity(new TestWall(), 128f, 128f);
 		addEntity(new TestWall(), 128f, 160f);
 		addEntity(new TestWall(), 128f, 192f);
 		addEntity(new TestWall(), 128f, 224f);
+		addEntity(player, Launcher.getGAME_WIDTH() / 2 - 32f / 2, Launcher.getGAME_HEIGHT() / 2 - 32f / 2); // 0
+		// addEntity(new PlayerManager(1), 32f, 128f);
 	}
 
 	int id, minFree = 0;
@@ -54,24 +56,27 @@ public class World {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) {
 		for (int i = 0; i <= (entityMap.keySet().size() == 0 ? 0 : Collections.max(entityMap.keySet())); i++) {
 			if (entityMap.get(i) != null) {
+				Boolean bt = ((DebugButton) GameMenu.buts.get(GameMenu.DEBUGID)).state;
 				if (entityMap.get(i).shouldDie()) {
 					entityMap.remove(i);
 				} else {
-					if (!entityMap.get(i).selected) {
-						if (entityMap.get(i).getColbox()
-								.contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY()))) {
-							if (Mouse.isButtonDown(0)) {
-								entityMap.get(i).selected = true;
-								id = i;
+					if (bt) {
+						if (!entityMap.get(i).selected) {
+							if (entityMap.get(i).getColbox().contains(
+									new Point(Mouse.getX() - xo, Launcher.getGAME_HEIGHT() - (Mouse.getY() + yo)))) {
+								if (Mouse.isButtonDown(0)) {
+									entityMap.get(i).selected = true;
+									id = i;
+								}
+							}
+						} else {
+							if (id != i) {
+								entityMap.get(i).selected = false;
 							}
 						}
-					} else {
-						if (id != i) {
-							entityMap.get(i).selected = false;
-						}
+
 					}
 					entityMap.get(i).update(delta, this, i);
-
 				}
 			} else {
 				if (minFree == -1 || entityMap.keySet().size() == 0) {
@@ -83,13 +88,13 @@ public class World {
 				}
 			}
 		}
-		
+
 		if (entityMap.get(minFree) != null) {
 			minFree = (entityMap.keySet().size() == 0 ? 0 : Collections.max(entityMap.keySet()) + 1);
 		}
-		
-		xo = -player.getX() + Launcher.getGAME_WIDTH()/2 - 32f/2;
-		yo = -player.getY() + Launcher.getGAME_HEIGHT()/2 - 32f/2;
+
+		xo = -player.getX() + Launcher.getGAME_WIDTH() / 2 - 32f / 2;
+		yo = -player.getY() + Launcher.getGAME_HEIGHT() / 2 - 32f / 2;
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
@@ -98,26 +103,33 @@ public class World {
 			if (entityMap.get(i) != null) {
 				if (entityMap.get(i).getColbox()
 						.intersects(new Rectangle(0, 0, Launcher.getGAME_WIDTH(), Launcher.getGAME_HEIGHT()))) {
-					entityMap.get(i).render(g, xo, yo);
+					entityMap.get(i).render(g, this);
 				}
-				if(debugMode){
-					if(j <= 36){
+				if (debugMode) {
+					if (j <= 36) {
+						String ents = entityMap.get(i).toString();
+						int entid = entityMap.get(i).getId();
+
+						String fins = "Ent. - " + ents;
+						String finid = "ID - " + entid;
+
 						if (entityMap.get(i).selected) {
 							g.setColor(Color.red);
-							g.drawRect(10, 58 + 15 * j, 200, 30);
+							g.drawRect(10, 58 + 15 * j, (float) (g.getFont().getWidth(fins) + 10), 30);
 						}
+
 						g.setColor(Color.white);
-						g.drawString("Ent. - " + entityMap.get(i).toString(), 10, 56 + 15 * j);
-						g.drawString("ID - " + entityMap.get(i).getId(), 10, 70 + 15 * j);
+						g.drawString(fins, 10, 56 + 15 * j);
+						g.drawString(finid, 10, 70 + 15 * j);
 						j += 2;
 					}
 				}
 			} else {
-				if(debugMode){
-					if(j <= 36){
+				if (debugMode) {
+					if (j <= 36) {
 						g.setColor(Color.red);
 						g.fillRect(10, 58 + 15 * j, 200, 30);
-		
+
 						g.setColor(Color.white);
 						g.drawString("Ent. - NULL", 10, 56 + 15 * j);
 						g.drawString("ID - NULL", 10, 70 + 15 * j);
@@ -126,16 +138,16 @@ public class World {
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < worldMap.size(); i++) {
 			if (worldMap.get(i) != null) {
 				if (worldMap.get(i).getColbox()
 						.intersects(new Rectangle(0, 0, Launcher.getGAME_WIDTH(), Launcher.getGAME_HEIGHT()))) {
-					worldMap.get(i).render(g, xo, yo);
+					worldMap.get(i).render(g, this);
 				}
 			}
 		}
-		if(debugMode){
+		if (debugMode) {
 			g.setColor(Color.white);
 			g.drawString("Entity map size: " + entityMap.size() + " / minFree: " + minFree, 10, 38);
 		}
@@ -151,6 +163,7 @@ public class World {
 			// Collections.max(entityMap.keySet()) + 1), entity);
 			entityMap.put(minFree, entity);
 			if (entityMap.get(minFree) != null) {
+				entity.setId(minFree);
 				minFree = (entityMap.keySet().size() == 0 ? 0 : Collections.max(entityMap.keySet()) + 1);
 			}
 		}
@@ -167,7 +180,7 @@ public class World {
 			}
 		}
 	}
-	
+
 	public void addWEntity(Entity entity, float x, float y) {
 		entity.setX(x);
 		entity.setY(y);
@@ -190,5 +203,12 @@ public class World {
 			}
 		}
 	}
-	
+
+	public float getMouseX() {
+		return (Mouse.getX() + xo);
+	}
+
+	public float getMouseY() {
+		return (Mouse.getY() + yo);
+	}
 }

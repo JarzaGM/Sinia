@@ -10,6 +10,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import ui.Button;
+import ui.buttons.ColBoxButton;
 import ui.buttons.DebugButton;
 import ui.buttons.ExitButton;
 import ui.buttons.PlayButton;
@@ -19,8 +20,8 @@ public class GameMenu extends BasicGameState{
 	
 	private static int state;
 	
-	private static ArrayList<Button> buts = new ArrayList<Button>();
-	
+	public static ArrayList<Button> buts = new ArrayList<Button>();
+	public static int PLAYID, EXITID, DEBUGID, COLBOXDEBUGID;
 	@SuppressWarnings("unused")
 	private int up_time, ups, upsc;
 	private boolean _init;
@@ -35,9 +36,14 @@ public class GameMenu extends BasicGameState{
 		gc.setMinimumLogicUpdateInterval(1000/60);
 		
 		if(!_init){
-			buts.add(new PlayButton(32, 100, 128,32, "Play"));
-			buts.add(new ExitButton(32, 164, 128,32, "Exit"));
-			buts.add(new DebugButton(32, 228, 128,32, "Debug Mode"));
+			buts.add(new PlayButton(32, 100, 128, 32, "Play"));
+			PLAYID = 0;
+			buts.add(new ExitButton(32, 164, 128, 32, "Exit"));
+			EXITID = 1;
+			buts.add(new DebugButton(32, 228, 128, 32, "Debug Mode"));
+			DEBUGID = 2;
+			buts.add(new ColBoxButton(32, 292, 128, 32, "Collision Boxes"));
+			COLBOXDEBUGID = 3;
 			_init = true;
 		}
 	}
