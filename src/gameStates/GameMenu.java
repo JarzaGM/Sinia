@@ -70,8 +70,6 @@ public class GameMenu extends BasicGameState{
 			up_time = 0;
 		}
 		
-		
-		
 		for(Button b : buts){
 			b.update();
 		}

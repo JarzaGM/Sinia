@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import entities.solid.PlayerManager;
 import main.Launcher;
+import popup.Popup;
 import world.World;
 
 public class Game extends BasicGameState {
@@ -22,7 +23,8 @@ public class Game extends BasicGameState {
 	private boolean _init;
 	public World world;
 	private int[] timer = new int[1000];
-
+	boolean cesc, pesc;
+	
 	public Game(int state) {
 		Game.state = state;
 	}
@@ -42,10 +44,13 @@ public class Game extends BasicGameState {
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Draw Updates per Second
-		g.setColor(Color.white);
-		g.drawString("Ticks: " + upsc, 10, 24);
-
 		world.render(gc, sbg, g);
+		
+		g.resetTransform();
+		g.setColor(Color.white);
+		if(World.debugMode){
+			g.drawString("Ticks: " + upsc, 10, 24);
+		}
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -54,8 +59,10 @@ public class Game extends BasicGameState {
 		timer[0] += delta;
 		timer[1] += delta;
 		ups++;
+		cesc = Keyboard.isKeyDown(Input.KEY_ESCAPE);
 		
-		if(Keyboard.isKeyDown(Input.KEY_ESCAPE)){
+		
+		if(cesc && !pesc){
 			Translator.gotoState(Launcher.menu);
 		}
 		
@@ -70,9 +77,11 @@ public class Game extends BasicGameState {
 			up_time = 0;
 		}
 		
-		if (timer[0] >= del) {
-			if (Keyboard.isKeyDown(Input.KEY_1)) {
-				world.addEntity(new PlayerManager(0), 32f, 32f);
+		if (timer[0] >= 250) {
+			if (true) { // Keyboard.isKeyDown(Input.KEY_1)
+//				world.addEntity(new PlayerManager(0), 32f, 32f);
+//				world.remEntity(world.entityMap.size()-1);
+				world.addEntity(new Popup("succ", Color.white, world.entityMap.get(1)), 0, 0);
 				timer[0] = 0;
 			}
 		}
@@ -82,7 +91,8 @@ public class Game extends BasicGameState {
 				timer[1] = 0;
 			}
 		}
-
+		
+		pesc = cesc;
 		Translator.update(sbg);
 	}
 

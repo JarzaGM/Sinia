@@ -1,30 +1,29 @@
 package entities;
 
-
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
 import physics.PhysicsType;
 import world.World;
 
-public abstract class Entity{
+public abstract class Tile{
 
 	private float x, y;
-	private float xv, yv;
-	private float speed;
 	private float width, height;
 	private Rectangle colbox;
 	private PhysicsType phyType;
 	private String string;
 	public boolean selected = false;
+	private Image tileimg;
 	
 	private int id;
 	private boolean kill;
 	
-	public abstract void update(int delta, World world, int id);
+	public abstract void update(int id);
 
 	public abstract void render(Graphics g, World world);
-	
+
 	public float getX() {
 		return x;
 	}
@@ -41,30 +40,6 @@ public abstract class Entity{
 	public void setY(float y) {
 		this.y = y;
 		this.setColbox(new Rectangle(getColbox().getX(),y,getColbox().getHeight(),getColbox().getWidth()));
-	}
-
-	public float getXv() {
-		return xv;
-	}
-
-	public void setXv(float xv) {
-		this.xv = xv;
-	}
-
-	public float getYv() {
-		return yv;
-	}
-
-	public void setYv(float yv) {
-		this.yv = yv;
-	}
-	
-	public float getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(float speed) {
-		this.speed = speed;
 	}
 
 	public float getWidth() {
@@ -101,6 +76,30 @@ public abstract class Entity{
 		this.phyType = phyType;
 	}
 
+	public String getString() {
+		return string;
+	}
+
+	public void setString(String string) {
+		this.string = string;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public Image getTileimg() {
+		return tileimg;
+	}
+
+	public void setTileimg(Image tileimg) {
+		this.tileimg = tileimg;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -108,21 +107,13 @@ public abstract class Entity{
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public boolean shouldDie(){
 		return kill;
 	}
 	
 	public void kill() {
 		this.kill = true;
-	}
-	
-	public void setString(String string) {
-		this.string = string;
-	}
-	
-	public String toString(){
-		return string;
 	}
 
 }

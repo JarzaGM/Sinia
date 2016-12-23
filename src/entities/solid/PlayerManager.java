@@ -4,7 +4,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -105,11 +107,19 @@ public class PlayerManager extends Entity {
 			g.setColor(Color.red);
 		}
 		
+		g.setDrawMode(Graphics.MODE_NORMAL);
+		
 		float a = Launcher.getGAME_WIDTH()/2 - getWidth()/2;
 		float b = Launcher.getGAME_HEIGHT()/2 - getHeight()/2;
 		
 		if(setting == 0){
-			g.fillRect(a, b, getWidth(), getHeight());
+//			g.fillRect(a, b, getWidth(), getHeight());
+			try {
+				Image im = new Image("res/tiles/grass.png", false, Image.FILTER_NEAREST);
+				g.drawImage(im, a, b, a + getWidth(), b + getHeight(), 0, 0, im.getWidth(), im.getHeight());
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}else if(setting == 1){
 			g.fillRect(getX() + World.xo,getY() + World.yo, getWidth(), getHeight());
 		}
@@ -142,7 +152,8 @@ public class PlayerManager extends Entity {
 			g.fillOval((Mouse.getX() - World.xo)  - getWidth()/2, Launcher.getGAME_HEIGHT() - getHeight()/2 - (Mouse.getY() + World.yo), 32, 32);
 			g.drawLine(scw, sch, (Mouse.getX() - World.xo), Launcher.getGAME_HEIGHT() - (Mouse.getY() + World.yo));
 		}
-
+		
+		g.setColor(Color.white);
 		g.resetTransform();
 		g.translate(World.xo, World.yo);
 		g.rotate(scw, sch, mpa + fov / 2f);

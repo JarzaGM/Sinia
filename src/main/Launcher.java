@@ -11,7 +11,7 @@ import gameStates.GameMenu;
 public class Launcher extends StateBasedGame{
 
 	public static final String gamename = "Sinia";
-	public static final String version = "v0.1.0";
+	public static final String version = "v0.1.1";
 	public static int GAME_WIDTH = 800;
 	public static int GAME_HEIGHT = 600;
 	public static double RESOLUTION = GAME_WIDTH / GAME_HEIGHT;

@@ -11,11 +11,16 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import cache.TempCacheSys;
 import entities.Entity;
+import entities.NonDefXY;
+import entities.Tile;
 import entities.solid.PlayerManager;
 import entities.solid.TestWall;
+import entities.tile.GrassTile;
 import gameStates.GameMenu;
 import main.Launcher;
+import popup.Popup;
 import ui.buttons.DebugButton;
 
 public class World {
@@ -25,7 +30,7 @@ public class World {
 	public int width, height; // Measured in tiles
 
 	public HashMap<Integer, Entity> entityMap;
-	public HashMap<Integer, Entity> worldMap;
+	public HashMap<Integer, Tile> worldMap;
 
 	public static boolean debugMode;
 
@@ -34,21 +39,30 @@ public class World {
 
 	public World() {
 		// Init new world
-
+		TempCacheSys.init();
+		
 		worldName = "Nexus";
 		width = height = 128; // Blank world, 2DO implement map loading
 
 		entityMap = new HashMap<Integer, Entity>();
-		worldMap = new HashMap<Integer, Entity>();
+		worldMap = new HashMap<Integer, Tile>();
 
 		player = new PlayerManager(0);
 
 		addEntity(new TestWall(), 128f, 128f);
-		addEntity(new TestWall(), 128f, 160f);
+		addEntity(new PlayerManager(1), 128f, 160f); // 0
 		addEntity(new TestWall(), 128f, 192f);
 		addEntity(new TestWall(), 128f, 224f);
+		addEntity(new TestWall(), 1200f, 224f);
 		addEntity(player, Launcher.getGAME_WIDTH() / 2 - 32f / 2, Launcher.getGAME_HEIGHT() / 2 - 32f / 2); // 0
 		// addEntity(new PlayerManager(1), 32f, 128f);
+		int cap = 20;
+		
+		for(int i = 0; i < cap; i++){
+			for(int j = 0; j < cap; j++){
+				addWEntity(new GrassTile(), i * 32f, j * 32f);
+			}
+		}
 	}
 
 	int id, minFree = 0;
@@ -99,10 +113,20 @@ public class World {
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		int j = 0;
+		
+		for (int i = 0; i < worldMap.size(); i++) {
+			if (worldMap.get(i) != null) {
+				if (worldMap.get(i).getColbox()
+						.intersects(new Rectangle(-xo, -yo,   Launcher.getGAME_WIDTH(),  Launcher.getGAME_HEIGHT()))) {
+					worldMap.get(i).render(g, this);
+				}
+			}
+		}
+		
 		for (int i = 0; i <= (entityMap.keySet().size() == 0 ? 0 : Collections.max(entityMap.keySet())); i++) {
 			if (entityMap.get(i) != null) {
 				if (entityMap.get(i).getColbox()
-						.intersects(new Rectangle(0, 0, Launcher.getGAME_WIDTH(), Launcher.getGAME_HEIGHT()))) {
+						.intersects(new Rectangle(-xo, -yo,   Launcher.getGAME_WIDTH(),  Launcher.getGAME_HEIGHT()))) {
 					entityMap.get(i).render(g, this);
 				}
 				if (debugMode) {
@@ -138,15 +162,7 @@ public class World {
 				}
 			}
 		}
-
-		for (int i = 0; i < worldMap.size(); i++) {
-			if (worldMap.get(i) != null) {
-				if (worldMap.get(i).getColbox()
-						.intersects(new Rectangle(0, 0, Launcher.getGAME_WIDTH(), Launcher.getGAME_HEIGHT()))) {
-					worldMap.get(i).render(g, this);
-				}
-			}
-		}
+		
 		if (debugMode) {
 			g.setColor(Color.white);
 			g.drawString("Entity map size: " + entityMap.size() + " / minFree: " + minFree, 10, 38);
@@ -155,8 +171,10 @@ public class World {
 	}
 
 	public void addEntity(Entity entity, float x, float y) {
-		entity.setX(x);
-		entity.setY(y);
+		if(!entity.getClass().isInstance(Popup.class)){
+			entity.setX(x);
+			entity.setY(y);
+		}
 
 		if ((maxEntities != -1 && entityMap.size() < maxEntities) || maxEntities == -1) {
 			// entityMap.put((entityMap.keySet().size() == 0 ? 0 :
@@ -181,14 +199,14 @@ public class World {
 		}
 	}
 
-	public void addWEntity(Entity entity, float x, float y) {
-		entity.setX(x);
-		entity.setY(y);
+	public void addWEntity(Tile tile, float x, float y) {
+		tile.setX(x);
+		tile.setY(y);
 
 		if ((maxEntities != -1 && worldMap.size() < maxEntities) || maxEntities == -1) {
 			// worldMap.put((worldMap.keySet().size() == 0 ? 0 :
 			// Collections.max(worldMap.keySet()) + 1), entity);
-			worldMap.put(worldMap.keySet().size() == 0 ? 0 : Collections.max(worldMap.keySet()) + 1, entity);
+			worldMap.put(worldMap.keySet().size() == 0 ? 0 : Collections.max(worldMap.keySet()) + 1, tile);
 		}
 
 	}
@@ -204,6 +222,7 @@ public class World {
 		}
 	}
 
+	
 	public float getMouseX() {
 		return (Mouse.getX() + xo);
 	}
