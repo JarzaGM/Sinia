@@ -7,113 +7,117 @@ import org.newdawn.slick.geom.Rectangle;
 import physics.PhysicsType;
 import world.World;
 
-public abstract class Tile{
+public abstract class Tile {
 
-	private float x, y;
-	private float width, height;
-	private Rectangle colbox;
-	private PhysicsType phyType;
-	private String string;
-	public boolean selected = false;
-	private Image tileimg;
-	
-	private int id;
-	private boolean kill;
-	
-	public abstract void update(int id);
+  private float x, y;
+  private float width, height;
+  private Rectangle colbox;
+  private PhysicsType phyType;
+  private String string;
+  public boolean selected = false;
+  private String tileimg;
 
-	public abstract void render(Graphics g, World world);
+  private int id;
+  private boolean kill;
 
-	public float getX() {
-		return x;
-	}
+  public abstract void update(int id);
 
-	public void setX(float x) {
-		this.x = x;
-		this.setColbox(new Rectangle(x,getColbox().getY(),getColbox().getHeight(),getColbox().getWidth()));
-	}
+  public abstract void render(Graphics g, World world);
 
-	public float getY() {
-		return y;
-	}
+  public float getX() {
+    return x;
+  }
 
-	public void setY(float y) {
-		this.y = y;
-		this.setColbox(new Rectangle(getColbox().getX(),y,getColbox().getHeight(),getColbox().getWidth()));
-	}
+  public void setX(float x) {
+    this.x = x;
+    this.setColbox(
+        new Rectangle(x, getColbox().getY(), getColbox().getHeight(), getColbox().getWidth()));
+  }
 
-	public float getWidth() {
-		return width;
-	}
+  public float getY() {
+    return y;
+  }
 
-	public void setWidth(float width) {
-		this.width = width;
-		this.setColbox(new Rectangle(getColbox().getX(),getColbox().getY(),width,getColbox().getHeight()));
-	}
+  public void setY(float y) {
+    this.y = y;
+    this.setColbox(
+        new Rectangle(getColbox().getX(), y, getColbox().getHeight(), getColbox().getWidth()));
+  }
 
-	public float getHeight() {
-		return height;
-	}
+  public float getWidth() {
+    return width;
+  }
 
-	public void setHeight(float height) {
-		this.height = height;
-		this.setColbox(new Rectangle(getColbox().getX(),getColbox().getY(),getColbox().getWidth(),height));
-	}
+  public void setWidth(float width) {
+    this.width = width;
+    this.setColbox(
+        new Rectangle(getColbox().getX(), getColbox().getY(), width, getColbox().getHeight()));
+  }
 
-	public Rectangle getColbox() {
-		return colbox;
-	}
+  public float getHeight() {
+    return height;
+  }
 
-	public void setColbox(Rectangle colbox) {
-		this.colbox = colbox;
-	}
+  public void setHeight(float height) {
+    this.height = height;
+    this.setColbox(
+        new Rectangle(getColbox().getX(), getColbox().getY(), getColbox().getWidth(), height));
+  }
 
-	public PhysicsType getPhyType() {
-		return phyType;
-	}
+  public Rectangle getColbox() {
+    return colbox;
+  }
 
-	public void setPhyType(PhysicsType phyType) {
-		this.phyType = phyType;
-	}
+  public void setColbox(Rectangle colbox) {
+    this.colbox = colbox;
+  }
 
-	public String getString() {
-		return string;
-	}
+  public PhysicsType getPhyType() {
+    return phyType;
+  }
 
-	public void setString(String string) {
-		this.string = string;
-	}
+  public void setPhyType(PhysicsType phyType) {
+    this.phyType = phyType;
+  }
 
-	public boolean isSelected() {
-		return selected;
-	}
+  public String getString() {
+    return string;
+  }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+  public void setString(String string) {
+    this.string = string;
+  }
 
-	public Image getTileimg() {
-		return tileimg;
-	}
+  public boolean isSelected() {
+    return selected;
+  }
 
-	public void setTileimg(Image tileimg) {
-		this.tileimg = tileimg;
-	}
-	
-	public int getId() {
-		return id;
-	}
+  public void setSelected(boolean selected) {
+    this.selected = selected;
+  }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+  public String getTileimg() {
+    return tileimg;
+  }
 
-	public boolean shouldDie(){
-		return kill;
-	}
-	
-	public void kill() {
-		this.kill = true;
-	}
+  public void setTileimg(String tileimg) {
+    this.tileimg = tileimg;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public boolean shouldDie() {
+    return kill;
+  }
+
+  public void kill() {
+    this.kill = true;
+  }
 
 }

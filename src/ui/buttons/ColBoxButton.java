@@ -6,50 +6,51 @@ import org.newdawn.slick.Graphics;
 
 import ui.MultiStateButton;
 
-public class ColBoxButton extends MultiStateButton{
-	
-	public ColBoxButton(float x, float y, float sx, float sy, String text) {
-		super(x, y, sx, sy, text);
-		maxState = 3; // it's 3 (0, 1, 2)
-		state = 1;
-	}
+public class ColBoxButton extends MultiStateButton {
 
-	public void update() {
-		cur = Mouse.isButtonDown(0);
-		
-		if (clicked()) {
-			state = (state > (maxState-1) || (state + 1) > (maxState-1) ? 0 : state+1);
-		}
-		
-		prev = cur;
-	}
+  public ColBoxButton(float x, float y, float sx, float sy, String text) {
+    super(x, y, sx, sy, text);
+    maxState = 3; // it's 3 (0, 1, 2)
+    state = 1;
+  }
 
-	public void render(Graphics g) {
-		if(g.getFont().getWidth(text) > sx){
-			sx = (float) (g.getFont().getWidth(text)*1.25);
-		}
-		
-		g.setColor(Color.blue);
-		g.drawRect(x, y, sx, sy);
+  public void update() {
+    cur = Mouse.isButtonDown(0);
 
-		g.setColor(Color.blue);
-		float of = (sx/(maxState));
-		g.fillRect(x + of*state, y, sx/maxState, sy);
-		
-		String[] a = {"On", "Off", "Debug"};
-		
-		for(int i = 0; i < maxState; i++){
-			if(state == i){
-				g.setColor(Color.white);
-			}else{
-				g.setColor(Color.gray);
-			}
-			g.drawString(a[i], x + of*i + of/2 - g.getFont().getWidth(a[i])/2, y + 3*sy/4 - g.getFont().getHeight(a[i])/2);
-			
-		}
-		
-		g.setColor(Color.white);
-		g.drawString(text, x + sx/2 - g.getFont().getWidth(text)/2, y);
-	}
-	
+    if (clicked()) {
+      state = (state > (maxState - 1) || (state + 1) > (maxState - 1) ? 0 : state + 1);
+    }
+
+    prev = cur;
+  }
+
+  public void render(Graphics g) {
+    if (g.getFont().getWidth(text) > sx) {
+      sx = (float) (g.getFont().getWidth(text) * 1.25);
+    }
+
+    g.setColor(Color.blue);
+    g.drawRect(x, y, sx, sy);
+
+    g.setColor(Color.blue);
+    float of = (sx / (maxState));
+    g.fillRect(x + of * state, y, sx / maxState, sy);
+
+    String[] a = {"On", "Off", "Debug"};
+
+    for (int i = 0; i < maxState; i++) {
+      if (state == i) {
+        g.setColor(Color.white);
+      } else {
+        g.setColor(Color.gray);
+      }
+      g.drawString(a[i], x + of * i + of / 2 - g.getFont().getWidth(a[i]) / 2,
+          y + 3 * sy / 4 - g.getFont().getHeight(a[i]) / 2);
+
+    }
+
+    g.setColor(Color.white);
+    g.drawString(text, x + sx / 2 - g.getFont().getWidth(text) / 2, y);
+  }
+
 }

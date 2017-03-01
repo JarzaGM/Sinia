@@ -9,32 +9,34 @@ import main.Launcher;
 
 public abstract class Button {
 
-	public float x, y, sx, sy;
-	public String text;
-	protected boolean cur, prev;
-	
-	/**
-	 * Custom button interface; X, Y, WIDTH, HEIGHT
-	 */
+  public float x, y, sx, sy;
+  public String text;
+  protected boolean cur, prev;
 
-	public Button(float x, float y, float sx, float sy, String text) {
-		this.x = x;
-		this.y = y;
-		this.sx = sx;
-		this.sy = sy;
-		this.text = text;
-	}
+  /**
+   * Custom button interface; X, Y, WIDTH, HEIGHT
+   */
 
-	public abstract void update();
+  public Button(float x, float y, float sx, float sy, String text) {
+    this.x = x;
+    this.y = y;
+    this.sx = sx;
+    this.sy = sy;
+    this.text = text;
+  }
 
-	public abstract void render(Graphics g);
+  public abstract void update();
 
-	public boolean clicked() {
-		return (new Rectangle(x, y, sx, sy).contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())) && cur && !prev);
-	}
-	
-	public boolean released() {
-		return (new Rectangle(x, y, sx, sy).contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())) && !cur && prev);
-	}
+  public abstract void render(Graphics g);
+
+  public boolean clicked() {
+    return (new Rectangle(x, y, sx, sy).contains(
+        new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())) && cur && !prev);
+  }
+
+  public boolean released() {
+    return (new Rectangle(x, y, sx, sy).contains(
+        new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())) && !cur && prev);
+  }
 
 }

@@ -1,5 +1,5 @@
 package physics;
 
 public enum PhysicsType {
-	Solid(), Dynamic(), Tile();
+  Solid(), Dynamic(), Tile();
 }
