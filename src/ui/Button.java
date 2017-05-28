@@ -1,17 +1,13 @@
 package ui;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.geom.Rectangle;
 
-import main.Launcher;
+import mouse.MouseClickHandler;
 
-public abstract class Button {
+public abstract class Button implements MouseClickHandler{
 
   public float x, y, sx, sy;
   public String text;
-  protected boolean cur, prev;
 
   /**
    * Custom button interface; X, Y, WIDTH, HEIGHT
@@ -25,18 +21,6 @@ public abstract class Button {
     this.text = text;
   }
 
-  public abstract void update();
-
   public abstract void render(Graphics g);
-
-  public boolean clicked() {
-    return (new Rectangle(x, y, sx, sy).contains(
-        new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())) && cur && !prev);
-  }
-
-  public boolean released() {
-    return (new Rectangle(x, y, sx, sy).contains(
-        new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY())) && !cur && prev);
-  }
 
 }

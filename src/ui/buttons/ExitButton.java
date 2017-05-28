@@ -3,6 +3,10 @@ package ui.buttons;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.geom.Rectangle;
+
+import main.Launcher;
 import ui.Button;
 
 public class ExitButton extends Button {
@@ -12,16 +16,17 @@ public class ExitButton extends Button {
     super(x, y, sx, sy, text);
   }
 
-  public void update() {
-    cur = Mouse.isButtonDown(0);
+  public void clicked() {
 
-    if (released()) {
-      // CLick
+  }
+
+  public void released() {
+    if (new Rectangle(x, y, sx, sy)
+        .contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY()))) {
       System.exit(0);
     }
-
-    prev = cur;
   }
+
 
   public void render(Graphics g) {
     g.setColor(Color.blue);

@@ -55,6 +55,7 @@ public class World {
     addEntity(new TestWall(), 1200f, 224f);
     addEntity(player, Launcher.getGAME_WIDTH() / 2 - 32f / 2,
         Launcher.getGAME_HEIGHT() / 2 - 32f / 2); // 0
+    
     // addEntity(new PlayerManager(1), 32f, 128f);
     int cap = 20;
 
@@ -172,10 +173,10 @@ public class World {
     g.translate(xo, yo);
   }
 
-  public void addEntity(Entity entity, float x, float y) {
-    if (!entity.getClass().isInstance(Popup.class)) {
-      entity.setX(x);
-      entity.setY(y);
+  public void addEntity(Entity entity, float... xny) {
+    if (xny.length > 1) {
+      entity.setX(xny[0]);
+      entity.setY(xny[1]);
     }
 
     if ((maxEntities != -1 && entityMap.size() < maxEntities) || maxEntities == -1) {

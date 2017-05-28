@@ -2,13 +2,18 @@ package gameStates;
 
 import java.util.ArrayList;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import main.Launcher;
+import mouse.MouseHandler;
 import ui.Button;
 import ui.buttons.ColBoxButton;
 import ui.buttons.DebugButton;
@@ -25,6 +30,7 @@ public class GameMenu extends BasicGameState {
   @SuppressWarnings("unused")
   private int up_time, ups, upsc;
   private boolean _init;
+  private MouseHandler mouseHandler = new MouseHandler();
 
   public GameMenu(int state) {
     GameMenu.state = state;
@@ -37,14 +43,27 @@ public class GameMenu extends BasicGameState {
     gc.setVSync(true);
 
     if (!_init) {
-      buts.add(new PlayButton(32, 100, 128, 32, "Play"));
+      // Button initialization
+      Button playb = new PlayButton(32, 100, 128, 32, "Play");
+      Button exitb = new ExitButton(32, 164, 128, 32, "Exit");
+      Button debugb = new DebugButton(32, 228, 128, 32, "Debug Mode");
+      Button colboxb = new ColBoxButton(32, 292, 128, 32, "Collision Boxes");
+
+      mouseHandler.addListener(playb);
+      mouseHandler.addListener(exitb);
+      mouseHandler.addListener(debugb);
+      mouseHandler.addListener(colboxb);
+
+      buts.add(playb);
+      buts.add(exitb);
+      buts.add(debugb);
+      buts.add(colboxb);
+
       PLAYID = 0;
-      buts.add(new ExitButton(32, 164, 128, 32, "Exit"));
       EXITID = 1;
-      buts.add(new DebugButton(32, 228, 128, 32, "Debug Mode"));
       DEBUGID = 2;
-      buts.add(new ColBoxButton(32, 292, 128, 32, "Collision Boxes"));
       COLBOXDEBUGID = 3;
+
       _init = true;
     }
   }
@@ -70,10 +89,10 @@ public class GameMenu extends BasicGameState {
       ups = 0;
       up_time = 0;
     }
-
-    for (Button b : buts) {
-      b.update();
-    }
+    // if(new Rectangle(b.x, b.y, b.sx, b.sy).contains(new Point(Mouse.getX(),
+    // Launcher.getGAME_HEIGHT() - Mouse.getY()))){
+    
+    mouseHandler.tickMouse();
 
     Translator.update(sbg);
   }

@@ -3,7 +3,11 @@ package ui.buttons;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.geom.Rectangle;
 
+import main.Launcher;
+import mouse.MouseClickHandler;
 import ui.MultiStateButton;
 
 public class ColBoxButton extends MultiStateButton {
@@ -14,14 +18,15 @@ public class ColBoxButton extends MultiStateButton {
     state = 1;
   }
 
-  public void update() {
-    cur = Mouse.isButtonDown(0);
-
-    if (clicked()) {
+  public void clicked() {
+    if (new Rectangle(x, y, sx, sy)
+        .contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY()))) {
       state = (state > (maxState - 1) || (state + 1) > (maxState - 1) ? 0 : state + 1);
     }
+  }
 
-    prev = cur;
+  public void released() {
+
   }
 
   public void render(Graphics g) {

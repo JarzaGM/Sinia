@@ -3,7 +3,11 @@ package ui.buttons;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.geom.Rectangle;
 
+import main.Launcher;
+import mouse.MouseClickHandler;
 import ui.OnOffButton;
 import world.World;
 
@@ -13,14 +17,18 @@ public class DebugButton extends OnOffButton {
     super(x, y, sx, sy, text);
   }
 
-  public void update() {
-    cur = Mouse.isButtonDown(0);
-    if (clicked()) {
+  public void clicked() {
+    if (new Rectangle(x, y, sx, sy)
+        .contains(new Point(Mouse.getX(), Launcher.getGAME_HEIGHT() - Mouse.getY()))) {
       state = !state;
+      World.debugMode = state;
     }
-    World.debugMode = state;
-    prev = cur;
   }
+
+  public void released() {
+
+  }
+
 
   public void render(Graphics g) {
     g.setColor(Color.blue);

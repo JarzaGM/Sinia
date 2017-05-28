@@ -8,7 +8,7 @@ import entities.Entity;
 import entities.NonDefXY;
 import world.World;
 
-public class Popup extends NonDefXY {
+public class Popup extends Entity {
 
   public static boolean defXY = false;
 

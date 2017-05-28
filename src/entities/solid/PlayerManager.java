@@ -7,9 +7,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Path;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 
+import cache.TempCacheSys;
 import entities.Entity;
 import gameStates.GameMenu;
 import main.Launcher;
@@ -28,8 +30,8 @@ public class PlayerManager extends Entity {
   public PlayerManager(int setting) {
     this.setting = setting;
     setColbox(new Rectangle(0f, 0f, 0f, 0f));
-    setWidth(16f);
-    setHeight(16f);
+    setWidth(32f);
+    setHeight(32f);
     setSpeed(0.4f);
     setString("Player " + (setting == 1 ? "orange" : "red"));
     setPhyType(PhysicsType.Dynamic);
@@ -56,15 +58,15 @@ public class PlayerManager extends Entity {
       setXv(getSpeed() * delta);
     }
 
-    // int dw = Mouse.getDWheel();
+//     int dw = Mouse.getDWheel();
     float c = 5f;
 
-    // if(dw < 0){
-    // fov -= c;
-    // }
-    // if(dw > 0){
-    // fov += c;
-    // }
+//     if(dw < 0){
+//     fov -= c;
+//     }
+//     if(dw > 0){
+//     fov += c;
+//     }
 
     if (Mouse.isButtonDown(0)) {
       fov -= c;
@@ -107,6 +109,7 @@ public class PlayerManager extends Entity {
     boolean bt = ((DebugButton) GameMenu.buts.get(GameMenu.DEBUGID)).state;
 
     if (at == 0 || (at == 2 && bt == true)) {
+      g.setColor(Color.white);
       g.draw(getColbox());
     }
 
@@ -156,19 +159,28 @@ public class PlayerManager extends Entity {
     try {
       Image im = new Image("res/tiles/grass.png", false, Image.FILTER_NEAREST);
 
-      float a = Launcher.getGAME_WIDTH() / 2 - getWidth() / 2 - im.getWidth();
-      float b = Launcher.getGAME_HEIGHT() / 2 - getHeight() / 2 - im.getHeight();
+      float a = Launcher.getGAME_WIDTH() / 2 - getWidth() / 2;
+      float b = Launcher.getGAME_HEIGHT() / 2 - getHeight() / 2;
 
       if (setting == 0) {
-        // g.fillRect(a, b, getWidth(), getHeight());
-        // g.drawImage(im, a, b, a + getWidth()*2, b + getHeight()*2, 0, 0, im.getWidth(),
-        // im.getHeight());
-        g.fillRect(a, b, getWidth() * 2, getHeight() * 2);
+//         g.fillRect(a, b, getWidth(), getHeight());
+//         g.drawImage(im, a, b, a + getWidth()*2, b + getHeight()*2, 0, 0, im.getWidth(),
+//         im.getHeight());
+        g.fillRect(a, b, getWidth(), getHeight());
       } else if (setting == 1) {
-        float x = (World.xo + getColbox().getCenterX()) - im.getWidth() / 2;
-        float y = (World.yo + getColbox().getCenterY()) - im.getHeight() / 2;
+        float x = (int) ((World.xo + getColbox().getCenterX()) - im.getWidth() / 2);
+        float y = (int) ((World.yo + getColbox().getCenterY()) - im.getHeight() / 2);
 
-        g.fillRect(x, y, getWidth(), getHeight());
+//        g.fillRect(x, y, getWidth(), getHeight());
+        g.drawImage(TempCacheSys.imgs.get("char").getScaledCopy(5), (int) x, (int) y);
+        g.setColor(Color.black);
+        Path path = new Path(x+ 9, y);
+        path.lineTo(x+getColbox().getWidth() + 10, y);
+        path.lineTo(x+getColbox().getWidth() + 10, y + 5);
+        path.lineTo(x+getColbox().getWidth() + 15, y + 5);
+        path.lineTo(x+getColbox().getWidth() + 15, y + 20);
+        g.draw(path);
+        
       }
     } catch (SlickException e) {
       e.printStackTrace();
